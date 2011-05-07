@@ -1,7 +1,7 @@
 
 
 TODO:
-- Add more documentation to wichbone bus interface.
+- Add more documentation to wishbone bus interface.
 - Finish register bus slave.
 - Set processor to read instructions from onboard flash.
 - Figure out how to program to onboard flash.
