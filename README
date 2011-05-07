@@ -1,0 +1,8 @@
+
+
+TODO:
+- Change wishbone bus interface to use standard signal names.
+- Add more documentation to wichbone bus interface.
+- Finish register bus slave.
+- Set processor to read instructions from onboard flash.
+- Figure out how to program to onboard flash.

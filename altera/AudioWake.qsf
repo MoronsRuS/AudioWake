@@ -1,0 +1,194 @@
+# -------------------------------------------------------------------------- #
+#
+# Copyright (C) 1991-2011 Altera Corporation
+# Your use of Altera Corporation's design tools, logic functions 
+# and other software and tools, and its AMPP partner logic 
+# functions, and any output files from any of the foregoing 
+# (including device programming or simulation files), and any 
+# associated documentation or information are expressly subject 
+# to the terms and conditions of the Altera Program License 
+# Subscription Agreement, Altera MegaCore Function License 
+# Agreement, or other applicable license agreement, including, 
+# without limitation, that your use is for the sole purpose of 
+# programming logic devices manufactured by Altera and sold by 
+# Altera or its authorized distributors.  Please refer to the 
+# applicable agreement for further details.
+#
+# -------------------------------------------------------------------------- #
+#
+# Quartus II
+# Version 10.1 Build 197 01/19/2011 Service Pack 1 SJ Web Edition
+# Date created = 09:52:50  April 23, 2011
+#
+# -------------------------------------------------------------------------- #
+#
+# Notes:
+#
+# 1) The default values for assignments are stored in the file:
+#		AudioWake_assignment_defaults.qdf
+#    If this file doesn't exist, see file:
+#		assignment_defaults.qdf
+#
+# 2) Altera recommends that you do not modify this file. This
+#    file is updated automatically by the Quartus II software
+#    and any changes you make may be lost or overwritten.
+#
+# -------------------------------------------------------------------------- #
+
+
+set_global_assignment -name FAMILY "Cyclone III"
+set_global_assignment -name DEVICE EP3C16F484C6
+set_global_assignment -name TOP_LEVEL_ENTITY AudioWake
+set_global_assignment -name ORIGINAL_QUARTUS_VERSION "10.1 SP1"
+set_global_assignment -name PROJECT_CREATION_TIME_DATE "09:52:50  APRIL 23, 2011"
+set_global_assignment -name LAST_QUARTUS_VERSION "10.1 SP1"
+set_global_assignment -name MIN_CORE_JUNCTION_TEMP 0
+set_global_assignment -name MAX_CORE_JUNCTION_TEMP 85
+set_global_assignment -name ERROR_CHECK_FREQUENCY_DIVISOR 1
+set_global_assignment -name NOMINAL_CORE_SUPPLY_VOLTAGE 1.2V
+set_global_assignment -name PARTITION_NETLIST_TYPE SOURCE -section_id Top
+set_global_assignment -name PARTITION_FITTER_PRESERVATION_LEVEL PLACEMENT_AND_ROUTING -section_id Top
+set_global_assignment -name PARTITION_COLOR 16764057 -section_id Top
+set_global_assignment -name STRATIX_DEVICE_IO_STANDARD "2.5 V"
+set_global_assignment -name MISC_FILE "L:/OIT/SP/altera/AudioWake.dpf"
+set_location_assignment PIN_J6 -to switches[0]
+set_location_assignment PIN_H5 -to switches[1]
+set_location_assignment PIN_D2 -to switches[9]
+set_location_assignment PIN_E4 -to switches[8]
+set_location_assignment PIN_E3 -to switches[7]
+set_location_assignment PIN_H7 -to switches[6]
+set_location_assignment PIN_J7 -to switches[5]
+set_location_assignment PIN_G5 -to switches[4]
+set_location_assignment PIN_G4 -to switches[3]
+set_location_assignment PIN_H6 -to switches[2]
+set_location_assignment PIN_B1 -to leds[9]
+set_location_assignment PIN_B2 -to leds[8]
+set_location_assignment PIN_C2 -to leds[7]
+set_location_assignment PIN_C1 -to leds[6]
+set_location_assignment PIN_E1 -to leds[5]
+set_location_assignment PIN_F2 -to leds[4]
+set_location_assignment PIN_H1 -to leds[3]
+set_location_assignment PIN_J3 -to leds[2]
+set_location_assignment PIN_J2 -to leds[1]
+set_location_assignment PIN_J1 -to leds[0]
+set_location_assignment PIN_G21 -to clk4
+set_location_assignment PIN_B12 -to clk9
+set_location_assignment PIN_F1 -to buttons[2]
+set_location_assignment PIN_G3 -to buttons[1]
+set_location_assignment PIN_H2 -to buttons[0]
+set_location_assignment PIN_D13 -to seg70[7]
+set_location_assignment PIN_E11 -to seg70[6]
+set_location_assignment PIN_F11 -to seg70[5]
+set_location_assignment PIN_H12 -to seg70[4]
+set_location_assignment PIN_H13 -to seg70[3]
+set_location_assignment PIN_G12 -to seg70[2]
+set_location_assignment PIN_F12 -to seg70[1]
+set_location_assignment PIN_F13 -to seg70[0]
+set_location_assignment PIN_B15 -to seg71[7]
+set_location_assignment PIN_A13 -to seg71[6]
+set_location_assignment PIN_B13 -to seg71[5]
+set_location_assignment PIN_C13 -to seg71[4]
+set_location_assignment PIN_A14 -to seg71[3]
+set_location_assignment PIN_B14 -to seg71[2]
+set_location_assignment PIN_E14 -to seg71[1]
+set_location_assignment PIN_A15 -to seg71[0]
+set_location_assignment PIN_A18 -to seg72[7]
+set_location_assignment PIN_D15 -to seg72[6]
+set_location_assignment PIN_A16 -to seg72[5]
+set_location_assignment PIN_B16 -to seg72[4]
+set_location_assignment PIN_E15 -to seg72[3]
+set_location_assignment PIN_A17 -to seg72[2]
+set_location_assignment PIN_B17 -to seg72[1]
+set_location_assignment PIN_F14 -to seg72[0]
+set_location_assignment PIN_G16 -to seg73[7]
+set_location_assignment PIN_B18 -to seg73[6]
+set_location_assignment PIN_F15 -to seg73[5]
+set_location_assignment PIN_A19 -to seg73[4]
+set_location_assignment PIN_B19 -to seg73[3]
+set_location_assignment PIN_C19 -to seg73[2]
+set_location_assignment PIN_D19 -to seg73[1]
+set_location_assignment PIN_G15 -to seg73[0]
+set_global_assignment -name POWER_PRESET_COOLING_SOLUTION "23 MM HEAT SINK WITH 200 LFPM AIRFLOW"
+set_global_assignment -name POWER_BOARD_THERMAL_MODEL "NONE (CONSERVATIVE)"
+set_global_assignment -name SYSTEMVERILOG_FILE ../src/Top.sv
+set_global_assignment -name SYSTEMVERILOG_FILE ../src/wishbone_b3.sv
+set_global_assignment -name SYSTEMVERILOG_FILE ../src/or1200.sv
+set_global_assignment -name SYSTEMVERILOG_FILE ../src/util.sv
+set_global_assignment -name VERILOG_FILE ../openrisc/or1200/rtl/verilog/timescale.v
+set_global_assignment -name VERILOG_FILE ../openrisc/or1200/rtl/verilog/or1200_xcv_ram32x8d.v
+set_global_assignment -name VERILOG_FILE ../openrisc/or1200/rtl/verilog/or1200_wbmux.v
+set_global_assignment -name VERILOG_FILE ../openrisc/or1200/rtl/verilog/or1200_wb_biu.v
+set_global_assignment -name VERILOG_FILE ../openrisc/or1200/rtl/verilog/or1200_tt.v
+set_global_assignment -name VERILOG_FILE ../openrisc/or1200/rtl/verilog/or1200_tpram_32x32.v
+set_global_assignment -name VERILOG_FILE ../openrisc/or1200/rtl/verilog/or1200_top.v
+set_global_assignment -name VERILOG_FILE ../openrisc/or1200/rtl/verilog/or1200_sprs.v
+set_global_assignment -name VERILOG_FILE ../openrisc/or1200/rtl/verilog/or1200_spram_2048x32_bw.v
+set_global_assignment -name VERILOG_FILE ../openrisc/or1200/rtl/verilog/or1200_spram_2048x32.v
+set_global_assignment -name VERILOG_FILE ../openrisc/or1200/rtl/verilog/or1200_spram_2048x8.v
+set_global_assignment -name VERILOG_FILE ../openrisc/or1200/rtl/verilog/or1200_spram_1024x32_bw.v
+set_global_assignment -name VERILOG_FILE ../openrisc/or1200/rtl/verilog/or1200_spram_1024x32.v
+set_global_assignment -name VERILOG_FILE ../openrisc/or1200/rtl/verilog/or1200_spram_1024x8.v
+set_global_assignment -name VERILOG_FILE ../openrisc/or1200/rtl/verilog/or1200_spram_512x20.v
+set_global_assignment -name VERILOG_FILE ../openrisc/or1200/rtl/verilog/or1200_spram_256x21.v
+set_global_assignment -name VERILOG_FILE ../openrisc/or1200/rtl/verilog/or1200_spram_128x32.v
+set_global_assignment -name VERILOG_FILE ../openrisc/or1200/rtl/verilog/or1200_spram_64x24.v
+set_global_assignment -name VERILOG_FILE ../openrisc/or1200/rtl/verilog/or1200_spram_64x22.v
+set_global_assignment -name VERILOG_FILE ../openrisc/or1200/rtl/verilog/or1200_spram_64x14.v
+set_global_assignment -name VERILOG_FILE ../openrisc/or1200/rtl/verilog/or1200_spram_32x24.v
+set_global_assignment -name VERILOG_FILE ../openrisc/or1200/rtl/verilog/or1200_spram_32_bw.v
+set_global_assignment -name VERILOG_FILE ../openrisc/or1200/rtl/verilog/or1200_spram.v
+set_global_assignment -name VERILOG_FILE ../openrisc/or1200/rtl/verilog/or1200_sb_fifo.v
+set_global_assignment -name VERILOG_FILE ../openrisc/or1200/rtl/verilog/or1200_sb.v
+set_global_assignment -name VERILOG_FILE ../openrisc/or1200/rtl/verilog/or1200_rfram_generic.v
+set_global_assignment -name VERILOG_FILE ../openrisc/or1200/rtl/verilog/or1200_rf.v
+set_global_assignment -name VERILOG_FILE ../openrisc/or1200/rtl/verilog/or1200_reg2mem.v
+set_global_assignment -name VERILOG_FILE ../openrisc/or1200/rtl/verilog/or1200_qmem_top.v
+set_global_assignment -name VERILOG_FILE ../openrisc/or1200/rtl/verilog/or1200_pm.v
+set_global_assignment -name VERILOG_FILE ../openrisc/or1200/rtl/verilog/or1200_pic.v
+set_global_assignment -name VERILOG_FILE ../openrisc/or1200/rtl/verilog/or1200_operandmuxes.v
+set_global_assignment -name VERILOG_FILE ../openrisc/or1200/rtl/verilog/or1200_mult_mac.v
+set_global_assignment -name VERILOG_FILE ../openrisc/or1200/rtl/verilog/or1200_mem2reg.v
+set_global_assignment -name VERILOG_FILE ../openrisc/or1200/rtl/verilog/or1200_lsu.v
+set_global_assignment -name VERILOG_FILE ../openrisc/or1200/rtl/verilog/or1200_iwb_biu.v
+set_global_assignment -name VERILOG_FILE ../openrisc/or1200/rtl/verilog/or1200_immu_top.v
+set_global_assignment -name VERILOG_FILE ../openrisc/or1200/rtl/verilog/or1200_immu_tlb.v
+set_global_assignment -name VERILOG_FILE ../openrisc/or1200/rtl/verilog/or1200_if.v
+set_global_assignment -name VERILOG_FILE ../openrisc/or1200/rtl/verilog/or1200_ic_top.v
+set_global_assignment -name VERILOG_FILE ../openrisc/or1200/rtl/verilog/or1200_ic_tag.v
+set_global_assignment -name VERILOG_FILE ../openrisc/or1200/rtl/verilog/or1200_ic_ram.v
+set_global_assignment -name VERILOG_FILE ../openrisc/or1200/rtl/verilog/or1200_ic_fsm.v
+set_global_assignment -name VERILOG_FILE ../openrisc/or1200/rtl/verilog/or1200_gmultp2_32x32.v
+set_global_assignment -name VERILOG_FILE ../openrisc/or1200/rtl/verilog/or1200_genpc.v
+set_global_assignment -name VERILOG_FILE ../openrisc/or1200/rtl/verilog/or1200_freeze.v
+set_global_assignment -name VERILOG_FILE ../openrisc/or1200/rtl/verilog/or1200_fpu_pre_norm_mul.v
+set_global_assignment -name VERILOG_FILE ../openrisc/or1200/rtl/verilog/or1200_fpu_pre_norm_div.v
+set_global_assignment -name VERILOG_FILE ../openrisc/or1200/rtl/verilog/or1200_fpu_pre_norm_addsub.v
+set_global_assignment -name VERILOG_FILE ../openrisc/or1200/rtl/verilog/or1200_fpu_post_norm_mul.v
+set_global_assignment -name VERILOG_FILE ../openrisc/or1200/rtl/verilog/or1200_fpu_post_norm_intfloat_conv.v
+set_global_assignment -name VERILOG_FILE ../openrisc/or1200/rtl/verilog/or1200_fpu_post_norm_div.v
+set_global_assignment -name VERILOG_FILE ../openrisc/or1200/rtl/verilog/or1200_fpu_post_norm_addsub.v
+set_global_assignment -name VERILOG_FILE ../openrisc/or1200/rtl/verilog/or1200_fpu_mul.v
+set_global_assignment -name VERILOG_FILE ../openrisc/or1200/rtl/verilog/or1200_fpu_intfloat_conv.v
+set_global_assignment -name VERILOG_FILE ../openrisc/or1200/rtl/verilog/or1200_fpu_fcmp.v
+set_global_assignment -name VERILOG_FILE ../openrisc/or1200/rtl/verilog/or1200_fpu_div.v
+set_global_assignment -name VERILOG_FILE ../openrisc/or1200/rtl/verilog/or1200_fpu_arith.v
+set_global_assignment -name VERILOG_FILE ../openrisc/or1200/rtl/verilog/or1200_fpu_addsub.v
+set_global_assignment -name VERILOG_FILE ../openrisc/or1200/rtl/verilog/or1200_fpu.v
+set_global_assignment -name VERILOG_FILE ../openrisc/or1200/rtl/verilog/or1200_except.v
+set_global_assignment -name VERILOG_FILE ../openrisc/or1200/rtl/verilog/or1200_du.v
+set_global_assignment -name VERILOG_FILE ../openrisc/or1200/rtl/verilog/or1200_dpram_256x32.v
+set_global_assignment -name VERILOG_FILE ../openrisc/or1200/rtl/verilog/or1200_dpram_32x32.v
+set_global_assignment -name VERILOG_FILE ../openrisc/or1200/rtl/verilog/or1200_dpram.v
+set_global_assignment -name VERILOG_FILE ../openrisc/or1200/rtl/verilog/or1200_dmmu_top.v
+set_global_assignment -name VERILOG_FILE ../openrisc/or1200/rtl/verilog/or1200_dmmu_tlb.v
+set_global_assignment -name VERILOG_FILE ../openrisc/or1200/rtl/verilog/or1200_defines.v
+set_global_assignment -name VERILOG_FILE ../openrisc/or1200/rtl/verilog/or1200_dc_top.v
+set_global_assignment -name VERILOG_FILE ../openrisc/or1200/rtl/verilog/or1200_dc_tag.v
+set_global_assignment -name VERILOG_FILE ../openrisc/or1200/rtl/verilog/or1200_dc_ram.v
+set_global_assignment -name VERILOG_FILE ../openrisc/or1200/rtl/verilog/or1200_dc_fsm.v
+set_global_assignment -name VERILOG_FILE ../openrisc/or1200/rtl/verilog/or1200_ctrl.v
+set_global_assignment -name VERILOG_FILE ../openrisc/or1200/rtl/verilog/or1200_cpu.v
+set_global_assignment -name VERILOG_FILE ../openrisc/or1200/rtl/verilog/or1200_cfgr.v
+set_global_assignment -name VERILOG_FILE ../openrisc/or1200/rtl/verilog/or1200_amultp2_32x32.v
+set_global_assignment -name VERILOG_FILE ../openrisc/or1200/rtl/verilog/or1200_alu.v
+set_instance_assignment -name PARTITION_HIERARCHY root_partition -to | -section_id Top
