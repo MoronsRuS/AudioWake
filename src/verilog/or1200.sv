@@ -94,12 +94,10 @@ module or1200 (
 	//clmode: 00 WB=RISC, 01 WB=RISC/2, 10 N/A, 11 WB=RISC/4
 	input	logic	[1:0]	clmode,
 	debug.processor		debugInterface,
-	wishbone_b3.master	instruction_bus,
-	wishbone_b3.master	data_bus,
+	wishboneMaster.master	instruction_bus,
+	wishboneMaster.master	data_bus,
 	powerManagement.processor pmInterface
 );
-assign instruction_bus.lock = 1'b0;
-assign data_bus.lock = 1'b0;
 
 or1200_top processor(
 	.clk_i(clock),
@@ -107,35 +105,35 @@ or1200_top processor(
 	.clmode_i(clmode),
 	.pic_ints_i(interrupts),
 	//Instruction Bus
-	.iwb_clk_i	(instruction_bus.clock),
-	.iwb_rst_i	(instruction_bus.reset),
-	.iwb_ack_i	(instruction_bus.ack),
-	.iwb_err_i	(instruction_bus.error),
-	.iwb_rty_i	(instruction_bus.retry),
-	.iwb_dat_i	(instruction_bus.dataSlave),
-	.iwb_cyc_o	(instruction_bus.cycle),
-	.iwb_adr_o	(instruction_bus.address),
-	.iwb_stb_o	(instruction_bus.strobe),
-	.iwb_we_o	(instruction_bus.writeEnable),
-	.iwb_sel_o	(instruction_bus.select),
-	.iwb_dat_o	(instruction_bus.dataMaster),
-	.iwb_cti_o	(instruction_bus.cycleTag[2:0]),
-	.iwb_bte_o	(instruction_bus.addressTag[1:0]),
+	.iwb_clk_i	(instruction_bus.clk_i),
+	.iwb_rst_i	(instruction_bus.rst_i),
+	.iwb_ack_i	(instruction_bus.ack_i),
+	.iwb_err_i	(instruction_bus.err_i),
+	.iwb_rty_i	(instruction_bus.rty_i),
+	.iwb_dat_i	(instruction_bus.dat_i),
+	.iwb_cyc_o	(instruction_bus.cyc_o),
+	.iwb_adr_o	(instruction_bus.adr_o),
+	.iwb_stb_o	(instruction_bus.stb_o),
+	.iwb_we_o	(instruction_bus.we_o),
+	.iwb_sel_o	(instruction_bus.sel_o),
+	.iwb_dat_o	(instruction_bus.dat_o),
+	.iwb_cti_o	(instruction_bus.tgc_o[2:0]),
+	.iwb_bte_o	(instruction_bus.tga_o[1:0]),
 	//Instruction Bus
-	.dwb_clk_i	(data_bus.clock),
-	.dwb_rst_i	(data_bus.reset),
-	.dwb_ack_i	(data_bus.ack),
-	.dwb_err_i	(data_bus.error),
-	.dwb_rty_i	(data_bus.retry),
-	.dwb_dat_i	(data_bus.dataSlave),
-	.dwb_cyc_o	(data_bus.cycle),
-	.dwb_adr_o	(data_bus.address),
-	.dwb_stb_o	(data_bus.strobe),
-	.dwb_we_o	(data_bus.writeEnable),
-	.dwb_sel_o	(data_bus.select),
-	.dwb_dat_o	(data_bus.dataMaster),
-	.dwb_cti_o	(data_bus.cycleTag[2:0]),
-	.dwb_bte_o	(data_bus.addressTag[1:0]),
+	.dwb_clk_i	(data_bus.clk_i),
+	.dwb_rst_i	(data_bus.rst_i),
+	.dwb_ack_i	(data_bus.ack_i),
+	.dwb_err_i	(data_bus.err_i),
+	.dwb_rty_i	(data_bus.rty_i),
+	.dwb_dat_i	(data_bus.dat_i),
+	.dwb_cyc_o	(data_bus.cyc_o),
+	.dwb_adr_o	(data_bus.adr_o),
+	.dwb_stb_o	(data_bus.stb_o),
+	.dwb_we_o	(data_bus.we_o),
+	.dwb_sel_o	(data_bus.sel_o),
+	.dwb_dat_o	(data_bus.dat_o),
+	.dwb_cti_o	(data_bus.tgc_o[2:0]),
+	.dwb_bte_o	(data_bus.tga_o[1:0]),
 	//Debug Interface
 	.dbg_stall_i	(debugInterface.stall),
 	.dbg_ewt_i	(debugInterface.ewt),
@@ -162,10 +160,10 @@ or1200_top processor(
 	.pm_lvolt_o	(pmInterface.lvolt)
 );
 
-assign instruction_bus.dataTagMaster = 0;
-assign instruction_bus.dataTagMaster = 0;
-assign data_bus.dataTagMaster = 0;
-assign data_bus.dataTagMaster = 0;
+assign instruction_bus.tgd_o = 0;
+assign instruction_bus.lock_o = 0;
+assign data_bus.tgd_o = 0;
+assign data_bus.lock_o = 0;
 
 endmodule
 

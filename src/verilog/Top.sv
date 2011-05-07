@@ -32,17 +32,17 @@ assign bReset = 1'b0;
 logic	[19:0]	processor0_interrupts;
 assign processor0_interrupts = 20'h0;
 
-wishbone_b3 #(.CYCLE_TAG_WIDTH(3),.ADDRESS_TAG_WIDTH(2))
+wishboneMaster #(.TGC_WIDTH(3),.TGA_WIDTH(2))
 	processor0_instruction_bus();
-assign processor0_instruction_bus.syscon.clock = bClock;
-assign processor0_instruction_bus.syscon.reset = bReset;
-assign processor0_instruction_bus.slave.dataTagSlave = 0;
+assign processor0_instruction_bus.syscon.clk_o = bClock;
+assign processor0_instruction_bus.syscon.rst_o = bReset;
+assign processor0_instruction_bus.intercon.tgd_i = 0;
 
-wishbone_b3 #(.CYCLE_TAG_WIDTH(3),.ADDRESS_TAG_WIDTH(2))
+wishboneMaster #(.TGC_WIDTH(3),.TGA_WIDTH(2))
 	processor0_data_bus();
-assign processor0_data_bus.syscon.clock = bClock;
-assign processor0_data_bus.syscon.reset = bReset;
-assign processor0_data_bus.slave.dataTagSlave = 0;
+assign processor0_data_bus.syscon.clk_o = bClock;
+assign processor0_data_bus.syscon.rst_o = bReset;
+assign processor0_data_bus.intercon.tgd_i = 0;
 
 powerManagement processor0_powerManagement();
 debug processor0_debug();
