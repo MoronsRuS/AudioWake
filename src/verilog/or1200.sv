@@ -1,4 +1,26 @@
-//Noah Bacon
+//****************************************************************************
+//	or1200.sv
+//	Wrapper and interfaces for or1200 processor.
+//
+//	This file is a part of the AudioWake project
+//	http://github.com/MoronsRuS/AudioWake
+//
+//	Description:
+//		This file contains a wrapper and verilog interfaces for an 
+//		or1200 (http://opencores.org/openrisc,or1200).  The 
+//		interfaces are the powerManagement interface and the 
+//		debug interface.  The wrapper module is or1200.
+//		
+//		I'm not really sure what to do with the power management and 
+//		debug signals right now.
+//	
+//	TODO:
+//		- Figure out more about the power management and debug 
+//		signals.
+//
+//	Author:
+//		MoronsRuS, https://github.com/MoronsRuS
+//****************************************************************************
 
 interface powerManagement;
 	logic		cpustall;
@@ -117,7 +139,9 @@ or1200_top processor(
 	.iwb_we_o	(instruction_bus.we_o),
 	.iwb_sel_o	(instruction_bus.sel_o),
 	.iwb_dat_o	(instruction_bus.dat_o),
+	//Cycle Type Indicator is part of Cycle Tag.
 	.iwb_cti_o	(instruction_bus.tgc_o[2:0]),
+	//Burst type indicator is part of Address Tag.
 	.iwb_bte_o	(instruction_bus.tga_o[1:0]),
 	//Instruction Bus
 	.dwb_clk_i	(data_bus.clk_i),
@@ -132,7 +156,9 @@ or1200_top processor(
 	.dwb_we_o	(data_bus.we_o),
 	.dwb_sel_o	(data_bus.sel_o),
 	.dwb_dat_o	(data_bus.dat_o),
+	//Cycle Type Indicator is part of Cycle Tag.
 	.dwb_cti_o	(data_bus.tgc_o[2:0]),
+	//Burst type indicator is part of Address Tag.
 	.dwb_bte_o	(data_bus.tga_o[1:0]),
 	//Debug Interface
 	.dbg_stall_i	(debugInterface.stall),
@@ -160,10 +186,10 @@ or1200_top processor(
 	.pm_lvolt_o	(pmInterface.lvolt)
 );
 
-assign instruction_bus.tgd_o = 0;
-assign instruction_bus.lock_o = 0;
-assign data_bus.tgd_o = 0;
-assign data_bus.lock_o = 0;
+assign instruction_bus.tgd_o = 0;//Set Data Tag to 0, we don't use it.
+assign instruction_bus.lock_o = 0;//Set lock to 0, we don't use it.
+assign data_bus.tgd_o = 0;//Set Data Tag to 0, we don't use it.
+assign data_bus.lock_o = 0;//Set lock to 0, we don't use it.
 
 endmodule
 

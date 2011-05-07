@@ -1,11 +1,17 @@
+Description:
+	This project is a music alarm clock.  It will use an external RTC (DS1307, http://www.sparkfun.com/datasheets/Components/DS1307.pdf) to 
+	tell the time.  It will use an external audio codec (VS1053B, http://www.sparkfun.com/datasheets/Components/SMD/vs1053.pdf) to play 
+	files.  It will be programmed onto a Terasic DEO (http://www.terasic.com.tw/cgi-bin/page/archive.pl?Language=English&No=364).  I will 
+	read files from a flash card plugged into the onboard flash connector.  I will program an OR1200 (http://opencores.org/openrisc,or1200) 
+	onto the onboard Altera Cyclone III.
 
 
 TODO:
-- Add more documentation to wishbone bus interface.
 - Finish register bus slave.
 - Set processor to read instructions from onboard flash.
 - Figure out how to program to onboard flash.
 
 DONE:
+- Add more documentation to wishbone bus interface.
 - Fix quartus project so it works.
 - Change wishbone bus interface to use standard signal names.

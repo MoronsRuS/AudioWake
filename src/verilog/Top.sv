@@ -1,3 +1,24 @@
+//****************************************************************************
+//	Top.sv
+//	AudioWake Top Level
+//
+//	This file is a part of the AudioWake project
+//	http://github.com/MoronsRuS/AudioWake
+//
+//	Description:
+//		This is the top level structural file for the AudioWake 
+//		project.
+//	
+//	TODO:
+//		- Connect processor to source of instructions.
+//		- Connect processor to board I/O (buttons, lights, etc).
+//		- Connect processor to off-board I/O:
+//			- Real time clock.
+//			- Audio Codec.
+//
+//	Author:
+//		MoronsRuS, https://github.com/MoronsRuS
+//****************************************************************************
 module AudioWake (
 	input	wire		clk4, //50 MHz
 	input	wire		clk9, //50 MHz

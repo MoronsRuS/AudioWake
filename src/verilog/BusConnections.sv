@@ -1,4 +1,39 @@
-//Noah Bacon
+//****************************************************************************
+//	BusConnections.sv
+//	Intercon modules for the wishbone bus.
+//
+//	This file is a part of the AudioWake project
+//	http://github.com/MoronsRuS/AudioWake
+//
+//	Description:
+//		This file contains intercon modules for the wishbone bus.
+//			directConnect -	An interconn module with no 
+//					connection logic, just a point to 
+//					point connection.
+//	
+//	TODO:
+//		- Nothing right now.
+//
+//	Author:
+//		MoronsRuS, https://github.com/MoronsRuS
+//****************************************************************************
+
+//****************************************************************************
+//	directConnect
+//	An intercon module for point to point bus connection.
+//
+//	Description:
+//		This is an intercon module for the wishbone bus with no 
+//		connection logic.  It's just a point to point connection 
+//		between a master and a slave.
+//	
+//	Interfaces:
+//		master:	A wishbone bus master.
+//		slave:	A wishbone bus slave.
+//
+//	TODO:
+//		- Nothing right now.
+//****************************************************************************
 module directConnect(
 	wishboneMaster.intercon	master,
 	wishboneSlave.intercon	slave

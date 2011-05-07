@@ -1,4 +1,42 @@
-//Noah Bacon
+//****************************************************************************
+//	WishboneInterfaces
+//	Verilog interfaces with signals for the wishbone bus.
+//
+//	This file is a part of the AudioWake project
+//	http://github.com/MoronsRuS/AudioWake
+//
+//	Description:
+//		This file contains verilog interfaces for the wishbone bus 
+//		(http://opencores.org/opencores,wishbone, version b3). There
+//		are two interfaces: wishboneMaster and wishboneSlave. The
+//		wishboneMaster connects a wishbone bus master to a syscon
+//		module and an intercon module.  The wishboneSlave connects a
+//		wishbone bus slave to a syscon module and an intercon module.
+//
+//		The syscon module controls the bus clock and bus reset.  The 
+//		wishbone bus clock and reset aren't related to an individual 
+//		module's clock or reset.  Meaning that your module can run off
+//		a different clock than the wishbone bus clock, but bus logic 
+//		part of your module must run off the bus clock.  Likewise 
+//		your module can have a different reset than the wishbone bus
+//		reset, but state related to the bus must be reset when the 
+//		bus reset is asserted.
+//
+//		The intercon module represents bus interconnection logic.
+//		It's job is to hook masters up to slaves and arbitration and
+//		address decoding so that the right master talks to the right
+//		slave.
+//
+//		The master module represents a wishbone bus master.
+//
+//		The slave module represents a wishbone bus slave.
+//	
+//	TODO:
+//		- Nothing right now.
+//
+//	Author:
+//		MoronsRuS, https://github.com/MoronsRuS
+//****************************************************************************
 interface wishboneMaster //Version b3
 #(
 	parameter	TGC_WIDTH =	0,
@@ -23,30 +61,31 @@ interface wishboneMaster //Version b3
 	logic	[DAT_WIDTH-1:0]		dat_o;
 	//Data to master
 	logic	[DAT_WIDTH-1:0]		dat_i;
-	//User defined, qualified by strobe
+	//Data Tag from master
 	logic	[TGDO_WIDTH-1:0]	tgd_o;
-	//User defined, qualified by strobe
+	//Data Tag to master
 	logic	[TGDI_WIDTH-1:0]	tgd_i;
 	//master signals
-	//Lock the bus (request lock)
+	//Lock the bus (request lock from intercon)
 	logic				lock_o;
-	//Bus Cycle Complete(success)
+	//Bus Cycle Terminated(slave reports success)
 	logic				ack_i;
-	//Bus Cycle Complete(error)
+	//Bus Cycle Terminated(slave reports error)
 	logic				err_i;
-	//Slave not ready, try again
+	//Bus Cycle Terminated(slave says to retry)
 	logic				rty_i;
-	//Cycle in progress (request cycle)
+	//Cycle in progress (request cycle from intercon, signal
+	//cycle to slave)
 	logic				cyc_o;
-	//User defined, qualified by cycle
+	//Cycle Tag from master.
 	logic	[TGC_WIDTH-1:0]		tgc_o;
 	//Address for transfer
 	logic	[ADR_WIDTH-1:0]		adr_o;
-	//User defined, qualified by strobe
+	//Address Tag from master
 	logic	[TGA_WIDTH-1:0]		tga_o;
-	//Write/Read
+	//Assert for write, deassert for read.
 	logic				we_o;
-	//Write or Read strobe
+	//Assert to actually write or read.
 	logic				stb_o;
 	//Bank select
 	logic	[SEL_WIDTH-1:0]		sel_o;
@@ -121,28 +160,28 @@ interface wishboneSlave //Version b3
 	logic	[DAT_WIDTH-1:0]		dat_o;
 	//Data to slave
 	logic	[DAT_WIDTH-1:0]		dat_i;
-	//User defined, qualified by strobe
+	//Data Tag from slave
 	logic	[TGDO_WIDTH-1:0]	tgd_o;
-	//User defined, qualified by strobe
+	//Data Tag to slave
 	logic	[TGDI_WIDTH-1:0]	tgd_i;
 	//slave signals
-	//Bus Cycle Complete(success)
+	//Bus Cycle Terminate(report success to master)
 	logic				ack_o;
-	//Bus Cycle Complete(error)
+	//Bus Cycle Terminate(report error to master)
 	logic				err_o;
-	//Slave not ready, try again
+	//Bus Cycle Terminate(tell master to retry)
 	logic				rty_o;
-	//Cycle in progress (request cycle)
+	//Cycle in progress (master is performing a bus cycle)
 	logic				cyc_i;
-	//User defined, qualified by cycle
+	//Cycle tag from master
 	logic	[TGC_WIDTH-1:0]		tgc_i;
 	//Address for transfer
 	logic	[ADR_WIDTH-1:0]		adr_i;
-	//User defined, qualified by strobe
+	//Address tag from master
 	logic	[TGA_WIDTH-1:0]		tga_i;
-	//Write/Read
+	//Write enable (assert for write, deassert for read).
 	logic				we_i;
-	//Write or Read strobe
+	//Strobe (assert to actually write or read).
 	logic				stb_i;
 	//Bank select
 	logic	[SEL_WIDTH-1:0]		sel_i;
