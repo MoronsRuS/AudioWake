@@ -13,6 +13,7 @@
 //	
 //	TODO:
 //		- Make outputReg work.
+//		- Document NullSlave.
 //		- Make an inputReg module for input.
 //
 //	Author:
@@ -38,6 +39,9 @@
 //				register.
 //			mode=3:	Use input as a mask to invert bits of the
 //				register.
+//
+//		When reset is asserted and a write is attempted the bus 
+//		error line will be asserted.
 //	
 //	Inputs:
 //		reset:	An asynchronus active high reset.  Loads RESET_PAT
@@ -56,14 +60,20 @@ module outputReg
 #(
 	parameter	DATA_WIDTH =	32,
 	parameter	SELECT_WIDTH =	4,
-	parameter	RESET_PAT =	0
+	parameter	RESET_PAT =	0,
+	parameter	TGD =		0
 )
 (
 	input	logic				reset,
 	wishboneSlave.slave			bus,
 	output	logic	[DATA_WIDTH-1:0]	out
 );
+`include "oitConstant.sv"
 	parameter	DATA_GRANULARITY = DATA_WIDTH/SELECT_WIDTH;
+	parameter	SELECT_BITS	= oitBits(SELECT_WIDTH);
+
+	assign bus.tgd_o = TGD;//Not using data tag.
+	
 	logic	error;//Indicates a bus error state
 	logic	active;//Indicates we are performing a write or read action.
 
@@ -74,7 +84,7 @@ module outputReg
 
 	assign error = bus.we_i & reset;
 	assign active = bus.cyc_i & bus.stb_i;
-	assign bus.ack_o = active & ~(error);
+	assign bus.ack_o = active & (~error);
 	assign bus.rty_o = 1'b0;
 	assign bus.err_o = active & error;
 	
@@ -89,12 +99,12 @@ generate
 //		assign lower = DATA_GRANULARITY*(i);
 //		assign incoming = bus.data_i[upper:lower];
 //		assign last = value[upper:lower];
-		assign incoming = bus.data_i[(i+1)*DATA_GRANULARITY-1:i*DATA_GRANULARITY];
+		assign incoming = bus.dat_i[(i+1)*DATA_GRANULARITY-1:i*DATA_GRANULARITY];
 		assign last = value[(i+1)*DATA_GRANULARITY-1:i*DATA_GRANULARITY];
 		
 		always @(*) begin
 			if (active & bus.we_i & bus.sel_i[i]) begin
-				case(bus.adr_i[1:0])
+				case(bus.adr_i[SELECT_BITS+1:SELECT_BITS])
 					2'h0:next = incoming;
 					2'h1:next = value | incoming;
 					2'h2:next = value & ~incoming;
@@ -109,7 +119,7 @@ generate
 	end
 endgenerate
 	
-	always @(negedge bus.clock or posedge reset) begin
+	always @(negedge bus.clk_i or posedge reset) begin
 		if (reset) begin
 			value = RESET_PAT;
 		end else begin
@@ -118,4 +128,15 @@ endgenerate
 	end
 	assign bus.dat_o = value;
 	assign out = value;
+endmodule
+
+module NullSlave
+(
+	wishboneSlave.slave			bus
+);
+	assign bus.ack_o = bus.cyc_i & bus.stb_i;
+	assign bus.rty_o = 1'b0;
+	assign bus.err_o = 1'b0;
+	assign bus.dat_o = 0;
+	assign bus.tgd_o = 0;
 endmodule
