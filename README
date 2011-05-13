@@ -7,6 +7,9 @@ Description:
 
 
 TODO:
+- Setup processor with RAM it can use.
+- Figure out bus interconnect logic for multiple slaves.
+- Figure out bus interconnect logic for multiple slaves and masters.
 - Finish register bus slave.
 - Set processor to read instructions from onboard flash.
 - Figure out how to program to onboard flash.
