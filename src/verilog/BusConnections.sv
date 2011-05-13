@@ -49,6 +49,7 @@ assign slave.tgd_i = master.tgd_o;
 assign slave.cyc_i = master.cyc_o;
 assign slave.tgc_i = master.tgc_o;
 assign slave.adr_i = master.adr_o;
+assign slave.tga_i = master.tga_o;
 assign slave.we_i = master.we_o;
 assign slave.stb_i = master.stb_o;
 assign slave.sel_i = master.sel_o;
