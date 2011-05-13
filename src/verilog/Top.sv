@@ -70,18 +70,18 @@ assign bReset = sReset;
 
 logic	[19:0]	processor0_interrupts;
 assign processor0_interrupts = 20'h0;
-//assign leds[8] = sReset;
-//assign leds[9] = sClock;
 
-wishboneMaster #(.TGC_WIDTH(3),.TGA_WIDTH(2)) processor0_instruction_bus();
-assign processor0_instruction_bus.syscon.clk_o = bClock;
-assign processor0_instruction_bus.syscon.rst_o = bReset;
-//assign processor0_instruction_bus.intercon.tgd_i = 0;
+wishboneMaster	#(.TGC_WIDTH(3),.TGA_WIDTH(2)) proc0IBus();
+wishboneMaster	#(.TGC_WIDTH(3),.TGA_WIDTH(2)) proc0DBus();
+wishboneSlave	#(.TGC_WIDTH(3),.TGA_WIDTH(2)) bootRomBus();
+//wishboneSlave	#(.TGC_WIDTH(3),.TGA_WIDTH(2)) ramBus();
+wishboneSlave	#(.TGC_WIDTH(3),.TGA_WIDTH(2)) ledBus();
 
-//assign processor0_instruction_bus.intercon.rty_i = 1;//Force retry.
-wishboneMaster #(.TGC_WIDTH(3),.TGA_WIDTH(2)) processor0_data_bus();
-assign processor0_data_bus.syscon.clk_o = bClock;
-assign processor0_data_bus.syscon.rst_o = bReset;
+BusControl syscon (.clock(bClock),.reset(bReset),
+	.proc0IBus(proc0IBus),.proc0DBus(proc0DBus),
+	.bootRomBus(bootRomBus),//.ramBus(ramBus),
+	.ledBus(ledBus)
+);
 
 powerManagement processor0_powerManagement();
 debug processor0_debug();
@@ -93,41 +93,29 @@ or1200 processor0(
 	.clmode(clmode),
 	.debugInterface(processor0_debug),
 	.pmInterface(processor0_powerManagement),
-	.instruction_bus(processor0_instruction_bus),
-	.data_bus(processor0_data_bus)
+	.instruction_bus(proc0IBus),
+	.data_bus(proc0DBus)
 );
+
 PowerManager proc0pm(processor0_powerManagement);
 Debuger proc0db(processor0_debug);
 
-wishboneSlave #(.TGC_WIDTH(3),.TGA_WIDTH(2)) bootBus();
-assign bootBus.syscon.clk_o = bClock;
-assign bootBus.syscon.rst_o = bReset;
-directConnect bootConn (.master(processor0_instruction_bus),.slave(bootBus));
-BootRom #(.ADDRESS_WIDTH(12)) boot (.bus(bootBus));
-//assign leds[5] = processor0_instruction_bus.intercon.cyc_o;
-//assign leds[4] = processor0_instruction_bus.intercon.stb_o;
-//assign leds[3] = processor0_instruction_bus.intercon.we_o;
-//assign leds[2] = processor0_instruction_bus.intercon.ack_i;
-//assign leds[1] = processor0_instruction_bus.intercon.rty_i;
-//assign leds[0] = processor0_instruction_bus.intercon.err_i;
+directConnect bootConn (.master(proc0IBus),.slave(bootRomBus));
+BootRom #(.ADDRESS_WIDTH(12)) boot (.bus(bootRomBus));
 
-wishboneSlave  #(.TGC_WIDTH(3),.TGA_WIDTH(2)) ledBus();
-assign ledBus.syscon.clk_o = bClock;
-assign ledBus.syscon.rst_o = bReset;
-directConnect portLeds (.master(processor0_data_bus),.slave(ledBus));
+directConnect portLeds (.master(proc0DBus),.slave(ledBus));
 outputReg #(.RESET_PAT(32'h11335577))
 	LEDS (.reset(sReset),.bus(ledBus),.out(leds[7:0]));/**/
 //NullSlave LEDS (.bus(ledBus));
-//assign leds[7:0] = processor0_data_bus.intercon.dat_o[7:0];
 
 
 always @(*) case (switches[4:1])
-	4'h0	: disp32 = processor0_instruction_bus.intercon.adr_o;
-	4'h1	: disp32 = processor0_instruction_bus.intercon.dat_i;
-	4'h2	: disp32 = bootBus.slave.adr_i;
-	4'h3	: disp32 = bootBus.slave.dat_o;
-	4'h4	: disp32 = processor0_data_bus.intercon.adr_o;
-	4'h5	: disp32 = processor0_data_bus.intercon.dat_o;
+	4'h0	: disp32 = proc0IBus.intercon.adr_o;
+	4'h1	: disp32 = proc0IBus.intercon.dat_i;
+	4'h2	: disp32 = bootRomBus.slave.adr_i;
+	4'h3	: disp32 = bootRomBus.slave.dat_o;
+	4'h4	: disp32 = proc0DBus.intercon.adr_o;
+	4'h5	: disp32 = proc0DBus.intercon.dat_o;
 	4'h6	: disp32 = ledBus.slave.adr_i;
 	4'h7	: disp32 = ledBus.slave.dat_i;
 	default	: disp32 = 32'hBADDF00D;
