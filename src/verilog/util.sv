@@ -8,11 +8,14 @@
 //	Description:
 //		This file contains some useful module related to the AudioWake
 //		project.
-//			hexToSeg7 -	a generic hexidecimal to 7 segment
+//			hexToSeg7 -	A generic hexidecimal to 7 segment
 //					decoder.
+//			powerOnReset -	A counter to hold drive a reset line 
+//					for a duration after power on.
 //	
 //	TODO:
-//		- Nothing right now.
+//		- Move the Power Manager to it's own file.
+//		- Move the Debuger to it's own file.
 //
 //	Author:
 //		MoronsRuS, https://github.com/MoronsRuS
@@ -111,4 +114,56 @@ always @(*) begin
 	endcase;
 end
 
+endmodule
+//****************************************************************************
+//	powerOnReset
+//	A counter to hold a reset line until it reaches TARGET.
+//	
+//
+//	Description:
+//		In FPGA's flip flops are ususally initialized to a uniform 
+//		state.  A power on reset module like this counts to a target 
+//		in the middle of the range so that the counter doesn't start 
+//		in a finished state.
+//
+//	Inputs:
+//		clock:	The clock for the counter (posedge triggered).
+//	
+//	Outputs:
+//		reset:	The reset line (active high).
+//
+//	TODO:
+//		- Nothing right now.
+//****************************************************************************
+module powerOnReset #(parameter WIDTH=8,parameter TARGET=8'h55) (
+	input	logic	clock,
+	output	logic	reset
+);
+logic [WIDTH-1:0] count;
+always @(posedge clock) begin
+	if (count < TARGET) begin
+		reset = 1'b1;
+		count = count + 1;
+	end else begin
+		reset = 1'b0;
+		count = count;
+	end
+end
+endmodule
+
+module PowerManager (
+	powerManagement.peripheral	proc
+);
+	assign proc.cpustall = 1'b0;
+endmodule
+
+module Debuger (
+	debug.peripheral	proc
+);
+	assign proc.stall = 1'b0;
+	assign proc.ewt = 1'b0;
+	assign proc.stb = 1'b0;
+	assign proc.we = 1'b0;
+	assign proc.adr = 32'h0;
+	assign proc.datI = 32'h0;
 endmodule
