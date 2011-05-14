@@ -18,7 +18,7 @@
 module __BOOTROM
 #(
 	parameter DATA_WIDTH =		32,
-	parameter ADDRESS_WIDTH =	12
+	parameter ADDRESS_WIDTH =	13
 )
 (
 	input	wire				clock,
@@ -35,7 +35,6 @@ module __BOOTROM
 	always @ (posedge clock)
 	begin
 		data <= rom[address];
-//		data = 32'h87654321;
 	end
 	
 	initial
@@ -48,7 +47,7 @@ module BootRom
 #(
 	parameter DATA_WIDTH =		32,
 	parameter ADDRESS_WIDTH =	12,
-	parameter TGD =			0
+	parameter TGD =			2'h0
 )
 (
 	wishboneSlave	bus
@@ -65,9 +64,7 @@ module BootRom
 	__BOOTROM #(.DATA_WIDTH(DATA_WIDTH),.ADDRESS_WIDTH(ADDRESS_WIDTH))
 		rom (
 			.clock(~bus.clk_i),
-//			.address(bus.adr_i),
 			.address(bus.adr_i[ADDRESS_WIDTH-1:2]),
-//			.address(0),
 			.data(bus.dat_o)
 		);
 	assign bus.tgd_o = TGD;//Not using data tag.
