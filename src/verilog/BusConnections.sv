@@ -55,3 +55,34 @@ assign slave.stb_i = master.stb_o;
 assign slave.sel_i = master.sel_o;
 
 endmodule
+
+module AddressedConnect
+#(
+	parameter	LOW	= 0,
+	parameter	HIGH	= 0,
+	parameter	DAT_WIDTH	= 32,
+	parameter	TGD_WIDTH	= 0
+)
+(
+	wishboneMaster.intercon	master,
+	wishboneSlave.intercon	slave
+);
+logic	selected;
+assign selected = (master.adr_o >= LOW && master.adr_o <= HIGH);
+	
+assign master.dat_i = (selected)?(slave.dat_o):({{1'bz}});
+assign master.tgd_i = (selected)?(slave.tgd_o):({{1'bz}});
+assign master.ack_i = (selected)?(slave.ack_o):(1'bz);
+assign master.err_i = (selected)?(slave.err_o):(1'bz);
+assign master.rty_i = (selected)?(slave.rty_o):(1'bz);
+assign slave.dat_i = master.dat_o;
+assign slave.tgd_i = master.tgd_o;
+assign slave.cyc_i = (selected)?(master.cyc_o):(1'b0);
+assign slave.tgc_i = master.tgc_o;
+assign slave.adr_i = master.adr_o;
+assign slave.tga_i = master.tga_o;
+assign slave.we_i = master.we_o;
+assign slave.stb_i = master.stb_o;
+assign slave.sel_i = master.sel_o;
+
+endmodule
