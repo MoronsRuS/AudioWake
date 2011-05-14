@@ -29,8 +29,8 @@
 //		acts as a wishbone slave and will partially decode it's 
 //		address to allow multiple actions.  The mode is the bits of 
 //		address just above those needed to address the data granules 
-//		(i.e. just above the 2 bits needed to address a byte in a 32 
-//		bit word).
+//		(for example just above the 2 bits needed to address a byte 
+//		in a 32 bit word).
 //			mode=0:	Just overwrite the contents of the register
 //				with the input.
 //			mode=1:	Use input as a mask to set bits of the
@@ -61,7 +61,7 @@ module outputReg
 	parameter	DATA_WIDTH =	32,
 	parameter	SELECT_WIDTH =	4,
 	parameter	RESET_PAT =	0,
-	parameter	TGD =		0
+	parameter	TGD =		2'h0
 )
 (
 	input	logic				reset,
@@ -106,9 +106,9 @@ generate
 			if (active & bus.we_i & bus.sel_i[i]) begin
 				case(bus.adr_i[SELECT_BITS+1:SELECT_BITS])
 					2'h0:next = incoming;
-					2'h1:next = value | incoming;
-					2'h2:next = value & ~incoming;
-					2'h3:next = value ^ incoming;
+					2'h1:next = last | incoming;
+					2'h2:next = last & ~incoming;
+					2'h3:next = last ^ incoming;
 				endcase
 			end else begin
 				next = last;

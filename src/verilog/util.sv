@@ -143,7 +143,7 @@ logic [WIDTH-1:0] count;
 always @(posedge clock) begin
 	if (count < TARGET) begin
 		reset = 1'b1;
-		count = count + 1;
+		count = count + {{WIDTH-2{1'b0}},1'b1};
 	end else begin
 		reset = 1'b0;
 		count = count;
