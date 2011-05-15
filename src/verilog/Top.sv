@@ -100,7 +100,7 @@ or1200 processor0(
 PowerManager proc0pm(processor0_powerManagement);
 Debuger proc0db(processor0_debug);
 
-AddressedConnect #(.LOW(32'h0000_0000),.HIGH(32'h0000_1FFF))
+AddressedConnect #(.LOW(32'h0000_0000),.HIGH(32'h0000_3FFF))
 	bootConn (.master(proc0IBus),.slave(bootRomBus));
 BootRom #(.ADDRESS_WIDTH(14)) boot (.bus(bootRomBus));
 
@@ -113,8 +113,17 @@ AddressedConnect #(.LOW(32'hF000_0000),.HIGH(32'hF000_000F))
 	portLedsConnect (.master(proc0DBus),.slave(ledBus));
 outputReg #(.RESET_PAT(32'h11335577))
 	portLeds (.reset(sReset),.bus(ledBus),.out(leds));
-//	LEDS (.reset(sReset),.bus(ledBus),.out(leds[7:0]));
-//NullSlave LEDS (.bus(ledBus));
+//NullSlave portLeds (.bus(ledBus));
+//assign	leds[0] = proc0DBus.master.err_i;
+//assign	leds[1] = proc0DBus.master.ack_i;
+//assign	leds[2] = proc0DBus.master.cyc_o;
+//assign	leds[3] = proc0DBus.master.stb_o;
+//assign	leds[4] = proc0DBus.master.we_o;
+//assign	leds[5] = proc0IBus.master.err_i;
+//assign	leds[6] = proc0IBus.master.ack_i;
+//assign	leds[7] = proc0IBus.master.cyc_o;
+//assign	leds[8] = proc0IBus.master.stb_o;
+//assign	leds[9] = proc0IBus.master.we_o;
 
 
 always @(*) case (switches[4:1])
