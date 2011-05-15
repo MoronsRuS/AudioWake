@@ -101,7 +101,7 @@ PowerManager proc0pm(processor0_powerManagement);
 Debuger proc0db(processor0_debug);
 
 directConnect bootConn (.master(proc0IBus),.slave(bootRomBus));
-BootRom #(.ADDRESS_WIDTH(12)) boot (.bus(bootRomBus));
+BootRom #(.ADDRESS_WIDTH(14)) boot (.bus(bootRomBus));
 
 directConnect portLeds (.master(proc0DBus),.slave(ledBus));
 outputReg #(.RESET_PAT(32'h11335577))

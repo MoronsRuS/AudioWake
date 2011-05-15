@@ -46,27 +46,31 @@ endmodule
 module BootRom
 #(
 	parameter DATA_WIDTH =		32,
-	parameter ADDRESS_WIDTH =	12,
+	parameter ADDRESS_WIDTH =	15,
+	parameter SEL_WIDTH	=4,
 	parameter TGD =			2'h0
 )
 (
-	wishboneSlave	bus
+	wishboneSlave.slave	bus
 );
-	logic	error;//Indicates bus error state.
-	logic	active;//Indicates an active write or read.
+`include "oitConstant.sv"
 
-	assign error = bus.we_i;//If a write is attempted we error.
-	assign active = bus.cyc_i & bus.stb_i;
-	assign bus.ack_o = active & (~error);
-	assign bus.rty_o = 1'b0;
-	assign bus.err_o = active & error;
-	
-	__BOOTROM #(.DATA_WIDTH(DATA_WIDTH),.ADDRESS_WIDTH(ADDRESS_WIDTH))
-		rom (
-			.clock(~bus.clk_i),
-			.address(bus.adr_i[ADDRESS_WIDTH-1:2]),
-			.data(bus.dat_o)
-		);
-	assign bus.tgd_o = TGD;//Not using data tag.
+logic	error;//Indicates bus error state.
+logic	active;//Indicates an active write or read.
+
+assign error = bus.we_i;//If a write is attempted we error.
+assign active = bus.cyc_i & bus.stb_i;
+assign bus.ack_o = active & (~error);
+assign bus.rty_o = 1'b0;
+assign bus.err_o = active & error;
+
+__BOOTROM #(	.DATA_WIDTH(DATA_WIDTH),
+		.ADDRESS_WIDTH(ADDRESS_WIDTH-oitBits(SEL_WIDTH)))
+	rom (
+		.clock(~bus.clk_i),
+		.address(bus.adr_i[ADDRESS_WIDTH-1:oitBits(SEL_WIDTH)]),
+		.data(bus.dat_o)
+	);
+assign bus.tgd_o = TGD;//Not using data tag.
 endmodule
 
