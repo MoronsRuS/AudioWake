@@ -53,10 +53,10 @@ logic		sClock;//Processor clock
 logic		bClock;//Bus clock
 logic	[1:0]	clmode;//Some kind of clock mode for processor
 
-//logic [24:0] clkCount;
-//always @(posedge clk4) clkCount = clkCount+1;
-assign sClock = clk4;
-//assign sClock = clkCount[24];
+logic [23:0] clkCount;
+always @(posedge clk4) clkCount = clkCount+1;
+assign sClock = clkCount[23];
+//assign sClock = clk4;
 assign bClock = sClock;
 assign clmode = 2'b00;//Bus clock == Processor clock ?
 
