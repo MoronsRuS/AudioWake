@@ -2,9 +2,8 @@
 
 void external_exception();
 
-volatile unsigned int* leds = (unsigned int*)(0x80000000);
-
 void Start() {
+	volatile unsigned int* leds = (unsigned int*)(0xF0000000);
 	while(1) {
 		*leds = 0xEEBBAA99;
 //		*leds = 0x99AABBEE;

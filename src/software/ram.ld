@@ -4,7 +4,7 @@ MEMORY
 {
     vectors     : ORIGIN = 0x00000100, LENGTH = 0x00002000 - 0x100
     flash       : ORIGIN = 0x00002000, LENGTH = 0x00002000
-    ram         : ORIGIN = 0x00004000, LENGTH = 0x00001000
+    ram         : ORIGIN = 0x70000000, LENGTH = 0x00002000
 }
  
 /*
@@ -17,13 +17,13 @@ MEMORY
 
 SECTIONS
 {
-    .vectors :   { *(.vectors) }    > vectors
+    .vectors :            { *(.vectors) }    > vectors
 
-    .text :	{ *(.text) }        > flash
-    .rodata :   { *(.rodata)}       > flash
-    .data :     { *(.data)  }       > ram
-    .bss :      { *(.bss)   }       > ram
-     
+    .text :               { *(.text) }        > flash
+    .rodata :             { *(.rodata)}       > flash
+    .data 0x70000000:     { *(.data)  }       > ram
+    .bss :                { *(.bss)   }       > ram
+
     .stack ALIGN(0x4): /*Word Align*/
     {
         __STACK_TOP    = . ;

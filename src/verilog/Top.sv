@@ -74,12 +74,12 @@ assign processor0_interrupts = 20'h0;
 wishboneMaster	#(.TGC_WIDTH(3),.TGA_WIDTH(2)) proc0IBus();
 wishboneMaster	#(.TGC_WIDTH(3),.TGA_WIDTH(2)) proc0DBus();
 wishboneSlave	#(.TGC_WIDTH(3),.TGA_WIDTH(2)) bootRomBus();
-//wishboneSlave	#(.TGC_WIDTH(3),.TGA_WIDTH(2)) ramBus();
+wishboneSlave	#(.TGC_WIDTH(3),.TGA_WIDTH(2)) ramBus();
 wishboneSlave	#(.TGC_WIDTH(3),.TGA_WIDTH(2)) ledBus();
 
 BusControl syscon (.clock(bClock),.reset(bReset),
 	.proc0IBus(proc0IBus),.proc0DBus(proc0DBus),
-	.bootRomBus(bootRomBus),//.ramBus(ramBus),
+	.bootRomBus(bootRomBus),.ramBus(ramBus),
 	.ledBus(ledBus)
 );
 
@@ -100,12 +100,20 @@ or1200 processor0(
 PowerManager proc0pm(processor0_powerManagement);
 Debuger proc0db(processor0_debug);
 
-directConnect bootConn (.master(proc0IBus),.slave(bootRomBus));
+AddressedConnect #(.LOW(32'h0000_0000),.HIGH(32'h0000_1FFF))
+	bootConn (.master(proc0IBus),.slave(bootRomBus));
 BootRom #(.ADDRESS_WIDTH(14)) boot (.bus(bootRomBus));
 
-directConnect portLeds (.master(proc0DBus),.slave(ledBus));
+AddressedConnect #(.LOW(32'h7000_0000),.HIGH(32'h7000_1FFF))
+	ramConnect (.master(proc0DBus),.slave(ramBus));
+Ram ram (.bus(ramBus));
+
+//directConnect portLeds (.master(proc0DBus),.slave(ledBus));
+AddressedConnect #(.LOW(32'hF000_0000),.HIGH(32'hF000_000F))
+	portLedsConnect (.master(proc0DBus),.slave(ledBus));
 outputReg #(.RESET_PAT(32'h11335577))
-	LEDS (.reset(sReset),.bus(ledBus),.out(leds[7:0]));/**/
+	portLeds (.reset(sReset),.bus(ledBus),.out(leds));
+//	LEDS (.reset(sReset),.bus(ledBus),.out(leds[7:0]));
 //NullSlave LEDS (.bus(ledBus));
 
 
