@@ -7,8 +7,10 @@ module BusControl (
 	wishboneSlave.syscon	bootRomBus,
 	wishboneSlave.syscon	ramBus,
 	wishboneSlave.syscon	ledBus,
-	wishboneSlave.syscon	i2c0Bus,
-	wishboneSlave.syscon	seg7Bus
+	wishboneSlave.syscon	seg7Bus,
+	wishboneSlave.syscon	swtchBus,
+	wishboneSlave.syscon	bttnBus,
+	wishboneSlave.syscon	i2c0Bus
 );
 	assign proc0IBus.clk_o = clock;
 	assign proc0IBus.rst_o = reset;
@@ -20,8 +22,12 @@ module BusControl (
 	assign ramBus.rst_o = reset;
 	assign ledBus.clk_o = clock;
 	assign ledBus.rst_o = reset;
-	assign i2c0Bus.clk_o = clock;
-	assign i2c0Bus.rst_o = reset;
 	assign seg7Bus.clk_o = clock;
 	assign seg7Bus.rst_o = reset;
+	assign swtchBus.clk_o = clock;
+	assign swtchBus.rst_o = reset;
+	assign bttnBus.clk_o = clock;
+	assign bttnBus.rst_o = reset;
+	assign i2c0Bus.clk_o = clock;
+	assign i2c0Bus.rst_o = reset;
 endmodule

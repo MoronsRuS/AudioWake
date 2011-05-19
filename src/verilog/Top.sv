@@ -87,14 +87,17 @@ wishboneMaster	#(.TGC_WIDTH(3),.TGA_WIDTH(2)) proc0DBus();
 wishboneSlave	#(.TGC_WIDTH(3),.TGA_WIDTH(2)) bootRomBus();
 wishboneSlave	#(.TGC_WIDTH(3),.TGA_WIDTH(2)) ramBus();
 wishboneSlave	#(.TGC_WIDTH(3),.TGA_WIDTH(2)) ledBus();
-wishboneSlave	#(.TGC_WIDTH(3),.TGA_WIDTH(2)) i2c0Bus();
 wishboneSlave	#(.TGC_WIDTH(3),.TGA_WIDTH(2)) seg7Bus();
+wishboneSlave	#(.TGC_WIDTH(3),.TGA_WIDTH(2)) swtchBus();
+wishboneSlave	#(.TGC_WIDTH(3),.TGA_WIDTH(2)) bttnBus();
+wishboneSlave	#(.TGC_WIDTH(3),.TGA_WIDTH(2)) i2c0Bus();
 
 BusControl syscon (.clock(bClock),.reset(bReset),
 	.proc0IBus(proc0IBus),.proc0DBus(proc0DBus),
 	.bootRomBus(bootRomBus),.ramBus(ramBus),
-	.ledBus(ledBus),.i2c0Bus(i2c0Bus),
-	.seg7Bus(seg7Bus)
+	.ledBus(ledBus),.seg7Bus(seg7Bus),
+	.swtchBus(swtchBus),.bttnBus(bttnBus),
+	.i2c0Bus(i2c0Bus)
 );
 
 powerManagement processor0_powerManagement();
@@ -141,10 +144,17 @@ assign seg72[7]	= ~seg7Digits[1][7];
 assign hex3	= seg7Digits[0][3:0];
 assign seg73[7]	= ~seg7Digits[0][7];
 
-AddressedConnect #(.LOW(32'hF000_0020),.HIGH(32'hF000_002F))
-	portButtonsConnect (.master(proc0DBus),.slave(buttonsBus));
+AddressedConnect #(.LOW(32'hF000_0020),.HIGH(32'hF000_0023))
+	portSwitchesConnect (.master(proc0DBus),.slave(swtchBus));
+InputSlave portSwitches (
+	.bus(swtchBus),
+	.in({22'h0,switches})
+);
+
+AddressedConnect #(.LOW(32'hF000_0024),.HIGH(32'hF000_0027))
+	portButtonsConnect (.master(proc0DBus),.slave(bttnBus));
 InputSlave portButtons (
-	.bus(buttonsBus),
+	.bus(bttnBus),
 	.in({29'h0,&dbButtons[2],&dbButtons[1],&dbButtons[0]})
 );
 
