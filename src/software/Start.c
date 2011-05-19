@@ -4,11 +4,15 @@ void external_exception();
 
 void Start() {
 	volatile unsigned int* leds = (unsigned int*)(0xF0000000);
+	volatile unsigned char* seg7 = (unsigned char*)(0xF0000010);
 	volatile unsigned char* i2c0_PRERlo = (unsigned char*)(0xF4000000);
 	volatile unsigned char* i2c0_PRERhi = (unsigned char*)(0xF4000001);
 	volatile unsigned char* i2c0_CTR = (unsigned char*)(0xF4000002);
 	volatile unsigned char* i2c0_DAT = (unsigned char*)(0xF4000003);
 	volatile unsigned char* i2c0_CSR = (unsigned char*)(0xF4000004);
+	char seconds;
+	char minutes;
+	char hours;
 	*i2c0_CTR =	0x00;//Disable
 	*i2c0_PRERhi =	0x00;//Set prescale
 	*i2c0_PRERlo =	0x63;//Set prescale
@@ -44,7 +48,23 @@ void Start() {
 		while ( (*i2c0_CSR) & 0x02) {
 //			*leds = 0x00000006;
 		}
-		*leds = *i2c0_DAT;
+		seconds = *i2c0_DAT;
+		*i2c0_CSR =	0x20;//read
+		while ( (*i2c0_CSR) & 0x02) {
+//			*leds = 0x00000007;
+		}
+		minutes = *i2c0_DAT;
+		*i2c0_CSR =	0x68;//stop, read, nack
+		while ( (*i2c0_CSR) & 0x02) {
+//			*leds = 0x00000008;
+		}
+		hours = *i2c0_DAT;
+		*leds = seconds;
+		seg7[0] = minutes & 0x0F;
+		seg7[1] = minutes >> 4;
+		seg7[2] = hours & 0x0F;
+		seg7[3] = ((hours >> 4) & 0x01) | ((hours << 2) * 0x80);
+//		*leds = *i2c0_DAT;
 //		while(1);
 //		while (1) *leds = 0x99AABBEE;
 	}
