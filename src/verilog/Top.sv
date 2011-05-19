@@ -58,6 +58,13 @@ logic	[1:0]	clmode;//Some kind of clock mode for processor
 logic [23:0] clkCount;
 always @(posedge clk4) clkCount = clkCount+1;
 //assign sClock = clkCount[23];
+logic	[2:0][3:0]	dbButtons;
+always @(posedge clkCount[13]) begin
+	dbButtons[0] = {~buttons[0],dbButtons[0][3:1]};
+	dbButtons[1] = {~buttons[1],dbButtons[1][3:1]};
+	dbButtons[2] = {~buttons[2],dbButtons[2][3:1]};
+end
+
 //assign sClock = clk4;
 assign sClock = clkCount[0];
 assign bClock = sClock;
@@ -68,7 +75,7 @@ powerOnReset #(.WIDTH(2),.TARGET(2'b10)) POR (.clock(sClock),.reset(poReset));
 
 logic		sReset;//System reset
 logic		bReset;//Bus reset
-assign sReset = poReset;
+assign sReset = poReset | &dbButtons[0];
 assign bReset = sReset;
 
 logic	[19:0]	proc0Interrupts;
