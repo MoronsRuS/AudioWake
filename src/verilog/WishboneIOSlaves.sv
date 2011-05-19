@@ -54,7 +54,7 @@
 //		bus:	A wishbone bus slave interface.
 //
 //	TODO:
-//		- Make it work, it's broken.
+//		- Test it.
 //****************************************************************************
 module outputReg
 #(
@@ -69,8 +69,8 @@ module outputReg
 	output	logic	[DATA_WIDTH-1:0]	out
 );
 `include "oitConstant.sv"
-	parameter	DATA_GRANULARITY = DATA_WIDTH/SELECT_WIDTH;
-	parameter	SELECT_BITS	= oitBits(SELECT_WIDTH);
+	localparam	DATA_GRANULARITY = DATA_WIDTH/SELECT_WIDTH;
+	localparam	SELECT_BITS	= oitBits(SELECT_WIDTH);
 
 	assign bus.tgd_o = TGD;//Not using data tag.
 	
