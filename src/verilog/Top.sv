@@ -28,7 +28,9 @@ module AudioWake (
 	output	logic	[7:0]	seg70,
 	output	logic	[7:0]	seg71,
 	output	logic	[7:0]	seg72,
-	output	logic	[7:0]	seg73
+	output	logic	[7:0]	seg73,
+	inout	logic		i2c0_scl,
+	inout	logic		i2c0_sda
 );
 
 //assign leds = {7'D0, buttons};
@@ -69,19 +71,21 @@ logic		bReset;//Bus reset
 assign sReset = poReset;
 assign bReset = sReset;
 
-logic	[19:0]	processor0_interrupts;
-assign processor0_interrupts = 20'h0;
+logic	[19:0]	proc0Interrupts;
+assign proc0Interrupts[19:11] = 9'h0;
+assign proc0Interrupts[9:0] = 10'h0;
 
 wishboneMaster	#(.TGC_WIDTH(3),.TGA_WIDTH(2)) proc0IBus();
 wishboneMaster	#(.TGC_WIDTH(3),.TGA_WIDTH(2)) proc0DBus();
 wishboneSlave	#(.TGC_WIDTH(3),.TGA_WIDTH(2)) bootRomBus();
 wishboneSlave	#(.TGC_WIDTH(3),.TGA_WIDTH(2)) ramBus();
 wishboneSlave	#(.TGC_WIDTH(3),.TGA_WIDTH(2)) ledBus();
+wishboneSlave	#(.TGC_WIDTH(3),.TGA_WIDTH(2)) i2c0Bus();
 
 BusControl syscon (.clock(bClock),.reset(bReset),
 	.proc0IBus(proc0IBus),.proc0DBus(proc0DBus),
 	.bootRomBus(bootRomBus),.ramBus(ramBus),
-	.ledBus(ledBus)
+	.ledBus(ledBus),.i2c0Bus(i2c0Bus)
 );
 
 powerManagement processor0_powerManagement();
@@ -90,7 +94,7 @@ debug processor0_debug();
 or1200 processor0(
 	.clock(sClock),
 	.reset(sReset),
-	.interrupts(processor0_interrupts),
+	.interrupts(proc0Interrupts),
 	.clmode(clmode),
 	.debugInterface(processor0_debug),
 	.pmInterface(processor0_powerManagement),
@@ -113,6 +117,21 @@ AddressedConnect #(.LOW(32'hF000_0000),.HIGH(32'hF000_000F))
 	portLedsConnect (.master(proc0DBus),.slave(ledBus));
 outputReg #(.RESET_PAT(32'h11335577))
 	portLeds (.reset(sReset),.bus(ledBus),.out(leds));
+
+logic	i2c0_sclOut,i2c0_sdaOut;
+AddressedConnect #(.LOW(32'hF400_0000),.HIGH(32'hF400_0007))
+	i2c0Connect (.master(proc0DBus),.slave(i2c0Bus));
+I2CMaster i2c0 (
+	.reset(sReset),
+	.bus(i2c0Bus),
+	.interrupt(proc0Interrupts[10]),
+	.sclIn(i2c0_scl),
+	.sclOut(i2c0_sclOut),
+	.sdaIn(i2c0_sda),
+	.sdaOut(i2c0_sdaOut)
+);
+assign i2c0_scl = (i2c0_sclOut)?(1'bz):(1'b0);
+assign i2c0_sda = (i2c0_sdaOut)?(1'bz):(1'b0);
 
 
 always @(*) case (switches[4:1])
