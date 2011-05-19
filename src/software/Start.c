@@ -44,7 +44,9 @@ void Start() {
 		while ( (*i2c0_CSR) & 0x02) {
 			*leds = 0x00000006;
 		}
-		while (1) *leds = 0x99AABBEE;
+		*leds = *i2c0_DAT;
+		while(1);
+//		while (1) *leds = 0x99AABBEE;
 	}
 }
 
