@@ -44,12 +44,12 @@ hexToSeg7 decoder0 (.hex(hex0), .seg7(seg70[6:0]));
 hexToSeg7 decoder1 (.hex(hex1), .seg7(seg71[6:0]));
 hexToSeg7 decoder2 (.hex(hex2), .seg7(seg72[6:0]));
 hexToSeg7 decoder3 (.hex(hex3), .seg7(seg73[6:0]));
-assign seg70[7] = switches[4];
-assign seg71[7] = switches[4];
-assign seg72[7] = switches[4];
-assign seg73[7] = switches[4];
+//assign seg70[7] = switches[4];
+//assign seg71[7] = switches[4];
+//assign seg72[7] = switches[4];
+//assign seg73[7] = switches[4];
 
-assign {hex3,hex2,hex1,hex0} = (switches[0])?(disp32[31:16]):(disp32[15:0]);
+//assign {hex3,hex2,hex1,hex0} = (switches[0])?(disp32[31:16]):(disp32[15:0]);
 
 logic		sClock;//Processor clock
 logic		bClock;//Bus clock
@@ -88,11 +88,13 @@ wishboneSlave	#(.TGC_WIDTH(3),.TGA_WIDTH(2)) bootRomBus();
 wishboneSlave	#(.TGC_WIDTH(3),.TGA_WIDTH(2)) ramBus();
 wishboneSlave	#(.TGC_WIDTH(3),.TGA_WIDTH(2)) ledBus();
 wishboneSlave	#(.TGC_WIDTH(3),.TGA_WIDTH(2)) i2c0Bus();
+wishboneSlave	#(.TGC_WIDTH(3),.TGA_WIDTH(2)) seg7Bus();
 
 BusControl syscon (.clock(bClock),.reset(bReset),
 	.proc0IBus(proc0IBus),.proc0DBus(proc0DBus),
 	.bootRomBus(bootRomBus),.ramBus(ramBus),
-	.ledBus(ledBus),.i2c0Bus(i2c0Bus)
+	.ledBus(ledBus),.i2c0Bus(i2c0Bus),
+	.seg7Bus(seg7Bus)
 );
 
 powerManagement processor0_powerManagement();
@@ -124,6 +126,20 @@ AddressedConnect #(.LOW(32'hF000_0000),.HIGH(32'hF000_000F))
 	portLedsConnect (.master(proc0DBus),.slave(ledBus));
 outputReg #(.RESET_PAT(32'h11335577))
 	portLeds (.reset(sReset),.bus(ledBus),.out(leds));
+
+logic	[3:0][7:0]	seg7Digits;
+AddressedConnect #(.LOW(32'hF000_0010),.HIGH(32'hF000_001F))
+	portSeg7Connect (.master(proc0DBus),.slave(seg7Bus));
+outputReg #(.RESET_PAT(32'h11335577))
+	portSeg7 (.reset(sReset),.bus(seg7Bus),.out(seg7Digits));
+assign hex0	= seg7Digits[3][3:0];
+assign seg70[7]	= ~seg7Digits[3][7];
+assign hex1	= seg7Digits[2][3:0];
+assign seg71[7]	= ~seg7Digits[2][7];
+assign hex2	= seg7Digits[1][3:0];
+assign seg72[7]	= ~seg7Digits[1][7];
+assign hex3	= seg7Digits[0][3:0];
+assign seg73[7]	= ~seg7Digits[0][7];
 
 logic	i2c0_sclOut,i2c0_sdaOut;
 AddressedConnect #(.LOW(32'hF400_0000),.HIGH(32'hF400_0007))
