@@ -55,8 +55,9 @@ logic	[1:0]	clmode;//Some kind of clock mode for processor
 
 logic [23:0] clkCount;
 always @(posedge clk4) clkCount = clkCount+1;
-assign sClock = clkCount[23];
+//assign sClock = clkCount[23];
 //assign sClock = clk4;
+assign sClock = clkCount[0];
 assign bClock = sClock;
 assign clmode = 2'b00;//Bus clock == Processor clock ?
 
@@ -108,22 +109,10 @@ AddressedConnect #(.LOW(32'h7000_0000),.HIGH(32'h7000_1FFF))
 	ramConnect (.master(proc0DBus),.slave(ramBus));
 Ram ram (.bus(ramBus));
 
-//directConnect portLeds (.master(proc0DBus),.slave(ledBus));
 AddressedConnect #(.LOW(32'hF000_0000),.HIGH(32'hF000_000F))
 	portLedsConnect (.master(proc0DBus),.slave(ledBus));
 outputReg #(.RESET_PAT(32'h11335577))
 	portLeds (.reset(sReset),.bus(ledBus),.out(leds));
-//NullSlave portLeds (.bus(ledBus));
-//assign	leds[0] = proc0DBus.master.err_i;
-//assign	leds[1] = proc0DBus.master.ack_i;
-//assign	leds[2] = proc0DBus.master.cyc_o;
-//assign	leds[3] = proc0DBus.master.stb_o;
-//assign	leds[4] = proc0DBus.master.we_o;
-//assign	leds[5] = proc0IBus.master.err_i;
-//assign	leds[6] = proc0IBus.master.ack_i;
-//assign	leds[7] = proc0IBus.master.cyc_o;
-//assign	leds[8] = proc0IBus.master.stb_o;
-//assign	leds[9] = proc0IBus.master.we_o;
 
 
 always @(*) case (switches[4:1])
