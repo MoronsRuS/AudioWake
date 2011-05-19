@@ -1,4 +1,4 @@
-/* Use internal memory*/
+ENTRY(_reset)
 
 MEMORY    
 {
@@ -17,17 +17,20 @@ MEMORY
 
 SECTIONS
 {
-    .vectors :            { *(.vectors) }    > vectors
+    .vectors :            { *(.vectors) }          > vectors
 
-    .text :               { *(.text) }        > flash
-    .rodata :             { *(.rodata)}       > flash
-    .data 0x70000000:     { *(.data)  }       > ram
-    .bss :                { *(.bss)   }       > ram
+    .text :               { *(.text .text.*) }     > flash
+    .rodata :             { *(.rodata .rodata.*)}  > flash
+    .data 0x70000000:     
+    {
+	    KEEP(*(.data))
+    }       > ram AT> flash
+    .bss :                { *(.bss)   }            > ram
 
     .stack ALIGN(0x4): /*Word Align*/
     {
         __STACK_TOP    = . ;
-        . = . + 0x00000500;
+        . = . + 0x00001000;
         __STACK_BOTTOM = . ;
     }                               > ram
 }

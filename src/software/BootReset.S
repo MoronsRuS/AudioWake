@@ -37,6 +37,12 @@ Date       Version Description                 Author
         .org \org
         .p2align 8
 
+		/*
+	    Redzone: We are not allowed to touch 128 bytes past stack pointer.
+	    We could also use gcc flag -mredzone=0
+	    */
+	    l.addi r1,r1,-128
+		
         l.addi r1,r1,-4
         l.sw 0x00(r1),r9
 
@@ -51,9 +57,12 @@ Date       Version Description                 Author
 
         l.lwz r9 ,0x00(r1)
         l.addi r1,r1,4
-
-        //Return from exception
-        l.rfe
+		
+		/*Restore Redzone*/
+		l.addi r1,r1,128
+        
+		//Return from exception
+        l.rfe		
 
          /* By default we loop forever, but this can be overridden */
         .weak exception_\name
@@ -85,7 +94,7 @@ ret_\name:
 
 .org 0x100 - 0x100 		// Sector .vectors start at 0x100
 
-
+.global _reset
 _reset:
 
 // Set stack pointer (r1) to 00003560
