@@ -141,6 +141,13 @@ assign seg72[7]	= ~seg7Digits[1][7];
 assign hex3	= seg7Digits[0][3:0];
 assign seg73[7]	= ~seg7Digits[0][7];
 
+AddressedConnect #(.LOW(32'hF000_0020),.HIGH(32'hF000_002F))
+	portButtonsConnect (.master(proc0DBus),.slave(buttonsBus));
+InputSlave portButtons (
+	.bus(buttonsBus),
+	.in({29'h0,&dbButtons[2],&dbButtons[1],&dbButtons[0]})
+);
+
 logic	i2c0_sclOut,i2c0_sdaOut;
 AddressedConnect #(.LOW(32'hF400_0000),.HIGH(32'hF400_0007))
 	i2c0Connect (.master(proc0DBus),.slave(i2c0Bus));
