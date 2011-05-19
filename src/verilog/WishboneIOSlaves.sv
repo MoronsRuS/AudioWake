@@ -130,6 +130,29 @@ endgenerate
 	assign out = value;
 endmodule
 
+module	InputSlave
+#(
+	parameter	DATA_WIDTH =	32,
+	parameter	TGD =		2'h0
+)
+(
+	wishboneSlave.slave			bus,
+	input	logic	[DATA_WIDTH-1:0]	in
+);
+	assign bus.tgd_o = TGD;//Not using data tag.
+	
+	logic	error;//Indicates a bus error state
+	logic	active;//Indicates we are performing a write or read action.
+
+	assign error = bus.we_i;
+	assign active = bus.cyc_i & bus.stb_i;
+	assign bus.ack_o = active & (~error);
+	assign bus.rty_o = 1'b0;
+	assign bus.err_o = active & error;
+	assign bus.dat_o = in;
+	
+endmodule
+
 module NullSlave
 (
 	wishboneSlave.slave			bus
