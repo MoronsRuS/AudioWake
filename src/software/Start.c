@@ -19,7 +19,7 @@ void Start() {
 		*i2c0_DAT =	0xD0;//Device address,write
 		*i2c0_CSR =	0x90;//start,write
 		while ( (*i2c0_CSR) & 0x02) {
-			*leds = 0x00000001;
+//			*leds = 0x00000001;
 		}
 		if ( ( (*i2c0_CSR) & 0x80)) {
 			while (1) *leds = 0x00000002;
@@ -27,7 +27,7 @@ void Start() {
 		*i2c0_DAT =	0x00;//Register address
 		*i2c0_CSR =	0x10;//write
 		while ( (*i2c0_CSR) & 0x02) {
-			*leds = 0x00000003;
+//			*leds = 0x00000003;
 		}
 		if ( ( (*i2c0_CSR) & 0x80)) {
 			while (1) *leds = 0x00000004;
@@ -35,17 +35,17 @@ void Start() {
 		*i2c0_DAT =	0xD1;//Device address,read
 		*i2c0_CSR =	0x90;//start,write
 		while ( (*i2c0_CSR) & 0x02) {
-			*leds = 0x00000004;
+//			*leds = 0x00000004;
 		}
 		if ( ( (*i2c0_CSR) & 0x80)) {
 			while (1) *leds = 0x00000005;
 		}
 		*i2c0_CSR =	0x20;//read
 		while ( (*i2c0_CSR) & 0x02) {
-			*leds = 0x00000006;
+//			*leds = 0x00000006;
 		}
 		*leds = *i2c0_DAT;
-		while(1);
+//		while(1);
 //		while (1) *leds = 0x99AABBEE;
 	}
 }
