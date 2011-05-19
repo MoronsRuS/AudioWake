@@ -120,6 +120,7 @@ set_global_assignment -name SDC_FILE AudioWake.out.sdc
 set_global_assignment -name SYSTEMVERILOG_FILE ../src/verilog/Ram.sv
 set_global_assignment -name SYSTEMVERILOG_FILE ../src/verilog/Top.sv
 set_global_assignment -name SYSTEMVERILOG_FILE ../src/verilog/or1200.sv
+set_global_assignment -name SYSTEMVERILOG_FILE ../src/verilog/I2CMaster.sv
 set_global_assignment -name SYSTEMVERILOG_FILE ../src/verilog/WishboneInterfaces.sv
 set_global_assignment -name SYSTEMVERILOG_FILE ../src/verilog/WishboneIOSlaves.sv
 set_global_assignment -name SYSTEMVERILOG_FILE ../src/verilog/BusConnections.sv
@@ -127,6 +128,11 @@ set_global_assignment -name SYSTEMVERILOG_FILE ../src/verilog/BusControl.sv
 set_global_assignment -name SYSTEMVERILOG_FILE ../src/verilog/util.sv
 set_global_assignment -name SYSTEMVERILOG_FILE ../src/verilog/oitlib/oitlib_modules.sv
 set_global_assignment -name SYSTEMVERILOG_FILE ../src/verilog/BootRom.sv
+set_global_assignment -name VERILOG_FILE ../src/verilog/i2c/timescale.v
+set_global_assignment -name VERILOG_FILE ../src/verilog/i2c/i2c_master_top.v
+set_global_assignment -name VERILOG_FILE ../src/verilog/i2c/i2c_master_defines.v
+set_global_assignment -name VERILOG_FILE ../src/verilog/i2c/i2c_master_byte_ctrl.v
+set_global_assignment -name VERILOG_FILE ../src/verilog/i2c/i2c_master_bit_ctrl.v
 set_global_assignment -name VERILOG_FILE ../../openrisc/or1200/rtl/verilog/timescale.v
 set_global_assignment -name VERILOG_FILE ../../openrisc/or1200/rtl/verilog/or1200_xcv_ram32x8d.v
 set_global_assignment -name VERILOG_FILE ../../openrisc/or1200/rtl/verilog/or1200_wbmux.v
