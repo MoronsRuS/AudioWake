@@ -4,9 +4,11 @@
 *.swo
 *.vim
 
-#?????
+#Subversion?
 .svn/
 .directory
+
+#gcc or1200 toolchain outputs
 *.o
 System.map
 *.dat
