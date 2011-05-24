@@ -1,0 +1,3 @@
+[submodule "src/software/mrsFAT32"]
+	path = src/software/mrsFAT32
+	url = git@github.com:MoronsRuS/mrsFAT32.git

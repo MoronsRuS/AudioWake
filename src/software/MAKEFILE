@@ -13,10 +13,10 @@ LIBPATH = ../../../toolchain/uClibc/lib
 
 CFLAGS  = -O2 -g -c -Wunknown-pragmas -mhard-mul -msoft-div -msoft-float -I $(INCLUDEPATH)
 LD_FLAGS= --stats -Tram.ld -L $(LIBPATH) -lc
-INCL    = spr_defs.h
+INCL    = spr_defs.h mrsFAT32/fat32.h
 LIBS    =
 
-BOOTOBJS = Start.o BootReset.o
+BOOTOBJS = Start.o BootReset.o mrsFAT32/fat32.o
 
 .PHONY: all
 all: boot.dat
