@@ -57,6 +57,8 @@ logic	[1:0]	clmode;//Some kind of clock mode for processor
 
 logic [23:0] clkCount;
 always @(posedge clk4) clkCount = clkCount+1;
+logic [24:0] clocks;
+assign clocks = {clkCount,clk4};
 //assign sClock = clkCount[23];
 logic	[2:0][3:0]	dbButtons;
 always @(posedge clkCount[13]) begin
@@ -66,7 +68,7 @@ always @(posedge clkCount[13]) begin
 end
 
 //assign sClock = clk4;
-assign sClock = clkCount[0];
+assign sClock = clocks[0];
 assign bClock = sClock;
 assign clmode = 2'b00;//Bus clock == Processor clock ?
 
@@ -123,7 +125,7 @@ BootRom #(.ADDRESS_WIDTH(14)) boot (.bus(bootRomBus));
 
 AddressedConnect #(.LOW(32'h7000_0000),.HIGH(32'h7000_1FFF))
 	ramConnect (.master(proc0DBus),.slave(ramBus));
-Ram ram (.bus(ramBus));
+Ram #(.ADR_WIDTH(13),.DAT_WIDTH(32)) ram (.bus(ramBus));
 
 AddressedConnect #(.LOW(32'hF000_0000),.HIGH(32'hF000_000F))
 	portLedsConnect (.master(proc0DBus),.slave(ledBus));
@@ -133,7 +135,7 @@ outputReg #(.RESET_PAT(32'h11335577))
 logic	[3:0][7:0]	seg7Digits;
 AddressedConnect #(.LOW(32'hF000_0010),.HIGH(32'hF000_001F))
 	portSeg7Connect (.master(proc0DBus),.slave(seg7Bus));
-outputReg #(.RESET_PAT(32'h11335577))
+outputReg #(.RESET_PAT(32'hEEEEEEEE))
 	portSeg7 (.reset(sReset),.bus(seg7Bus),.out(seg7Digits));
 assign hex0	= seg7Digits[3][3:0];
 assign seg70[7]	= ~seg7Digits[3][7];

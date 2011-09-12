@@ -163,3 +163,14 @@ module NullSlave
 	assign bus.dat_o = 0;
 	assign bus.tgd_o = 0;
 endmodule
+
+module ErrorSlave
+(
+	wishboneSlave.slave			bus
+);
+	assign bus.ack_o = bus.cyc_i & bus.stb_i;
+	assign bus.rty_o = 1'b0;
+	assign bus.err_o = 1'b1;
+	assign bus.dat_o = 0;
+	assign bus.tgd_o = 0;
+endmodule

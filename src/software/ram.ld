@@ -3,7 +3,7 @@ ENTRY(_reset)
 MEMORY    
 {
     vectors     : ORIGIN = 0x00000100, LENGTH = 0x00002000 - 0x100
-    flash       : ORIGIN = 0x00002000, LENGTH = 0x00002000
+    flash       : ORIGIN = 0x00002000, LENGTH = 0x00004000
     ram         : ORIGIN = 0x70000000, LENGTH = 0x00002000
 }
  

@@ -12,6 +12,7 @@ INCLUDEPATH = ../../../toolchain/toolchain-out/or32-linux/sys-root/usr/include
 LIBPATH = ../../../toolchain/uClibc/lib
 
 CFLAGS  = -O2 -g -c -Wunknown-pragmas -mhard-mul -msoft-div -msoft-float -I $(INCLUDEPATH)
+#CFLAGS  = -g -c -Wunknown-pragmas -mhard-mul -msoft-div -msoft-float -I $(INCLUDEPATH)
 LD_FLAGS= --stats -Tram.ld -L $(LIBPATH) -lc
 INCL    = spr_defs.h
 LIBS    =
@@ -35,10 +36,10 @@ boot.or32: $(BOOTOBJS) MAKEFILE ram.ld $(INCL)
 	$(CC) $(CFLAGS) -o $@ $(<)
 
 %.o:%.c
-	$(CC) $(CFLAGS) -o $@ $(<)
+	$(CC) $(CFLAGS) -Wa,-adhln -o $@ $(<) > $@.s
 
 %.o:%.cpp
-	$(CXX) $(CFLAGS) -o $@ $(<)
+	$(CXX) $(CFLAGS) -Wa,-adhln -o $@ $(<) > $@.s
 
 .PHONY: clean
 clean:

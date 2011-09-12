@@ -50,7 +50,7 @@ __RAM #(.DAT_WIDTH(GRN_WIDTH),
 	.ADR_WIDTH(ADR_WIDTH-oitBits(SEL_WIDTH)))
 	ram (
 		.clock(bus.clk_i),
-		.writeEnable(bus.we_i & bus.sel_i[i]),
+		.writeEnable(bus.we_i & bus.sel_i[i] & active),
 		.writeAddress(bus.adr_i[ADR_WIDTH-1:oitBits(SEL_WIDTH)]),
 		.readAddress(bus.adr_i[ADR_WIDTH-1:oitBits(SEL_WIDTH)]),
 		.dataIn(bus.dat_i[(i+1)*GRN_WIDTH-1:i*GRN_WIDTH]),
